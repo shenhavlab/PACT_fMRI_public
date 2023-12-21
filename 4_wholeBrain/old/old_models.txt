@@ -1,0 +1,2510 @@
+switch name
+
+
+    case 'targdist2'                 % =====================================================
+        %%
+
+        isRT    = isfinite(r.behav.rt(:, task_runs));
+
+
+        %  ---- RT -----
+        rt = r.behav.rt(:, task_runs);
+        prevRT = prevRT(:, task_runs);
+        nextRT = nextRT(:, task_runs);
+
+        %  ---- Acc -----
+        acc = r.behav.acc(:, task_runs);
+        prevAcc = prevAcc(:, task_runs);
+        nextAcc = nextAcc(:, task_runs);
+
+
+        %  ---- Dist -----
+        dist = r.confs(:, task_runs);
+        prevDist = prevDist(:, task_runs);
+        nextDist = nextDist(:, task_runs);
+        prev2Dist = prev2Dist(:, task_runs);
+        next2Dist = next2Dist(:, task_runs);
+
+        %  ---- Targ -----
+        targ = r.attendCohs(:, task_runs);
+        prevTarg = prevTarg(:, task_runs);
+        nextTarg = nextTarg(:, task_runs);
+        prev2Targ = prev2Targ(:, task_runs);
+        next2Targ = next2Targ(:, task_runs);
+
+
+
+
+
+
+        nc = 1;
+
+        %  =============== 1: response trials
+
+        durations{nc}        = trialDur;
+        names{nc}            = 'trial';
+        onsets{nc}           = dot_allStart(isRT)';
+        orth{nc}             = 0;
+
+        pm = 1;
+
+
+
+
+        % 2: RT
+        pmod(nc).name{pm}     = 'targ';
+        pmod(nc).param{pm}    = center(.5*(targ(isRT)-3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 2: RT
+        pmod(nc).name{pm}     = 'dist';
+        pmod(nc).param{pm}    = center(-(dist(isRT)-3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+        % 2: RT
+        pmod(nc).name{pm}     = 'dist2';
+        pmod(nc).param{pm}    = center(abs(-(dist(isRT)-3)))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+
+
+
+        runList = [1:(length(pmod(1).name)+2)] % keep track of conditions
+
+        % ===== COLINEARITY =====
+        xs = [];
+        for ii = 1:(pm-1)
+            xs(:,ii) = pmod(nc).param{ii}';
+        end
+
+        collintest(xs)
+        % ===== COLINEARITY =====
+
+
+        % =============== 8: lapse trials
+        nc = nc+1;
+        if ~isempty(dot_allStart(~isRT))
+
+            durations{nc}        = trialDur;
+            names{nc}            = 'lapse';
+            onsets{nc}           = dot_allStart(~isRT);
+            orth{nc}             = 0;
+
+            nc = nc+1;
+
+        else
+            runList(end) = []
+        end
+
+
+
+        case 'lagTarg'      % =====================================================
+        %%
+
+        isRT    = isfinite(r.behav.rt(:, task_runs)) &  isfinite(nextRT(:, task_runs)) &  isfinite(prevRT(:, task_runs));
+
+
+        %  ---- RT -----
+        rt = r.behav.rt(:, task_runs);
+        prevRT = prevRT(:, task_runs);
+        nextRT = nextRT(:, task_runs);
+
+        %  ---- Acc -----
+        acc = r.behav.acc(:, task_runs);
+        prevAcc = prevAcc(:, task_runs);
+        nextAcc = nextAcc(:, task_runs);
+
+
+        %  ---- Dist -----
+        dist = r.confs(:, task_runs);
+        prevDist = prevDist(:, task_runs);
+        nextDist = nextDist(:, task_runs);
+        prev2Dist = prev2Dist(:, task_runs);
+        next2Dist = next2Dist(:, task_runs);
+
+        %  ---- Targ -----
+        targ = r.attendCohs(:, task_runs);
+        prevTarg = prevTarg(:, task_runs);
+        nextTarg = nextTarg(:, task_runs);
+        prev2Targ = prev2Targ(:, task_runs);
+        next2Targ = next2Targ(:, task_runs);
+
+
+
+
+
+
+        nc = 1;
+
+        %  =============== 1: response trials
+
+        durations{nc}        = trialDur;
+        names{nc}            = 'trial';
+        onsets{nc}           = dot_allStart(isRT)';
+        orth{nc}             = 0;
+
+        pm = 1;
+
+
+
+
+        % 2: RT
+        pmod(nc).name{pm}     = 'targ';
+        pmod(nc).param{pm}    = (.5*(targ(isRT)-3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: prevRT
+        pmod(nc).name{pm}     = 'prevTarg';
+        pmod(nc).param{pm}    = (.5*(prevTarg(isRT)-3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+        % 3: nextRT
+        pmod(nc).name{pm}     = 'nextTarg';
+        pmod(nc).param{pm}    = (.5*(nextTarg(isRT)-3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+
+
+        runList = [1:(length(pmod(1).name)+2)] % keep track of conditions
+
+        % ===== COLINEARITY =====
+        xs = [];
+        for ii = 1:(pm-1)
+            xs(:,ii) = pmod(nc).param{ii}';
+        end
+
+        collintest(xs)
+        % ===== COLINEARITY =====
+
+
+        % =============== 8: lapse trials
+        nc = nc+1;
+        if ~isempty(dot_allStart(~isRT))
+
+            durations{nc}        = trialDur;
+            names{nc}            = 'lapse';
+            onsets{nc}           = dot_allStart(~isRT);
+            orth{nc}             = 0;
+
+            nc = nc+1;
+
+        else
+            runList(end) = []
+        end
+
+
+
+
+
+
+
+
+
+    case 'PES'      % =====================================================
+        %%
+
+        isRT    = isfinite(r.behav.rt(:, task_runs)) &  isfinite(nextRT(:, task_runs)) &  isfinite(prevRT(:, task_runs));
+
+
+
+
+        nc = 1;
+
+        %  =============== 1: response trials
+
+        durations{nc}        = trialDur;
+        names{nc}            = 'trial';
+        onsets{nc}           = dot_allStart(isRT)';
+        orth{nc}             = 0;
+
+        pm = 1;
+
+
+
+        %  ---- RT -----
+        rt = r.behav.rt(:, task_runs);
+        prevRT = prevRT(:, task_runs);
+        nextRT = nextRT(:, task_runs);
+
+        %  ---- Acc -----
+        acc = r.behav.acc(:, task_runs);
+        prevAcc = prevAcc(:, task_runs);
+        nextAcc = nextAcc(:, task_runs);
+
+        %  ---- Dist -----
+        dist = r.confs(:, task_runs);
+        nextDist = nextDist(:, task_runs);
+        prevDist = prevDist(:, task_runs);
+
+
+
+        % 2: currAcc
+        pmod(nc).name{pm}     = 'acc';
+        pmod(nc).param{pm}    = center(acc(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+        % 3: pastPES
+        pmod(nc).name{pm}     = 'prevPES';
+        pmod(nc).param{pm}    = center(prevRT(isRT))' .* center(acc(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 4: nextPES
+        pmod(nc).name{pm}     = 'nextPES';
+        pmod(nc).param{pm}    = center(nextRT(isRT))' .* center(acc(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 5: pastPEIA
+        pmod(nc).name{pm}     = 'prevPERI';
+        pmod(nc).param{pm}    = center(prevRT(isRT))' .* center(acc(isRT))' .* (.5*(3-prevDist(isRT)))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 6: nextPEIA
+        pmod(nc).name{pm}     = 'nextPERI';
+        pmod(nc).param{pm}    = center(nextRT(isRT))' .* center(acc(isRT))' .* (.5*(3-nextDist(isRT)))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+        runList = [1:(length(pmod(1).name)+2)] % keep track of conditions
+
+        % ===== COLINEARITY =====
+        xs = [];
+        for ii = 1:(pm-1)
+            xs(:,ii) = pmod(nc).param{ii}';
+        end
+
+        collintest(xs)
+        % ===== COLINEARITY =====
+
+
+        % =============== 7: lapse trials
+        nc = nc+1;
+        if ~isempty(dot_allStart(~isRT))
+
+            durations{nc}        = trialDur;
+            names{nc}            = 'lapse';
+            onsets{nc}           = dot_allStart(~isRT);
+            orth{nc}             = 0;
+
+            nc = nc+1;
+
+        else
+            runList(end) = []
+        end
+
+
+
+
+
+
+
+
+    case 'distAdapt'      % =====================================================
+        %%
+
+        isRT    = isfinite(r.behav.rt(:, task_runs)) &  isfinite(nextRT(:, task_runs)) &  isfinite(prevRT(:, task_runs));
+
+
+
+
+        nc = 1;
+
+        %  =============== 1: response trials
+
+        durations{nc}        = trialDur;
+        names{nc}            = 'trial';
+        onsets{nc}           = dot_allStart(isRT)';
+        orth{nc}             = 0;
+
+        pm = 1;
+
+
+
+        %  ---- RT -----
+        rt = r.behav.rt(:, task_runs);
+        prevRT = prevRT(:, task_runs);
+        nextRT = nextRT(:, task_runs);
+
+        %  ---- Acc -----
+        acc = r.behav.acc(:, task_runs);
+        prevAcc = prevAcc(:, task_runs);
+        nextAcc = nextAcc(:, task_runs);
+
+
+        % 2: distractor congruence
+        dist = r.confs(:, task_runs);
+        nextDist = nextDist(:, task_runs);
+        prevDist = prevDist(:, task_runs);
+
+        pmod(nc).name{pm}     = 'dist';
+        pmod(nc).param{pm}    = (-.5*(dist(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+        %  ---- adapt -----
+
+        % 3: pastDistRT
+        pmod(nc).name{pm}     = 'prevDistRT';
+        pmod(nc).param{pm}    = center(prevRT(isRT))' .* (-.5*(dist(isRT) - 3))' .* (-.5*(prevDist(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: nextDistRT
+        pmod(nc).name{pm}     = 'nextDistRT';
+        pmod(nc).param{pm}    = center(nextRT(isRT))' .* (-.5*(dist(isRT) - 3))' .* (-.5*(nextDist(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: distDist1RT
+        pmod(nc).name{pm}     = 'prevDistAcc';
+        pmod(nc).param{pm}    = center(prevAcc(isRT))' .* (-.5*(dist(isRT) - 3))' .* (-.5*(prevDist(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: distDist1RT
+        pmod(nc).name{pm}     = 'nextDistAcc';
+        pmod(nc).param{pm}    = center(nextAcc(isRT))' .* (-.5*(dist(isRT) - 3))' .* (-.5*(nextDist(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+
+
+
+        runList = [1:(length(pmod(1).name)+2)] % keep track of conditions
+
+        % ===== COLINEARITY =====
+        xs = [];
+        for ii = 1:(pm-1)
+            xs(:,ii) = pmod(nc).param{ii}';
+        end
+
+        collintest(xs)
+        % ===== COLINEARITY =====
+
+
+        % =============== 7: lapse trials
+        nc = nc+1;
+        if ~isempty(dot_allStart(~isRT))
+
+            durations{nc}        = trialDur;
+            names{nc}            = 'lapse';
+            onsets{nc}           = dot_allStart(~isRT);
+            orth{nc}             = 0;
+
+            nc = nc+1;
+
+        else
+            runList(end) = []
+        end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    case 'egnerAdapt'      % =====================================================
+        %%
+
+        isRT    = isfinite(r.behav.rt(:, task_runs));
+
+
+
+
+        nc = 1;
+
+        %  =============== 1: response trials
+
+        durations{nc}        = trialDur;
+        names{nc}            = 'trial';
+        onsets{nc}           = dot_allStart(isRT)';
+        orth{nc}             = 0;
+
+        pm = 1;
+
+
+
+        %  ---- RT -----
+        rt = r.behav.rt(:, task_runs);
+        prevRT = prevRT(:, task_runs);
+        nextRT = nextRT(:, task_runs);
+
+        %  ---- Acc -----
+        acc = r.behav.acc(:, task_runs);
+        prevAcc = prevAcc(:, task_runs);
+        nextAcc = nextAcc(:, task_runs);
+
+
+        % 2: distractor congruence
+        dist = r.confs(:, task_runs);
+        nextDist = nextDist(:, task_runs);
+        prevDist = prevDist(:, task_runs);
+
+
+
+
+        % 3: prevDist
+        pmod(nc).name{pm}     = 'prevDist';
+        pmod(nc).param{pm}    = (-.5*(prevDist(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: curDist
+        pmod(nc).name{pm}     = 'curDist';
+        pmod(nc).param{pm}    = (-.5*(dist(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: xDist
+        pmod(nc).name{pm}     = 'xDist';
+        pmod(nc).param{pm}    = (-.5*(dist(isRT) - 3))' .* (-.5*(prevDist(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+
+
+        runList = [1:(length(pmod(1).name)+2)] % keep track of conditions
+
+        % ===== COLINEARITY =====
+        xs = [];
+        for ii = 1:(pm-1)
+            xs(:,ii) = pmod(nc).param{ii}';
+        end
+
+        collintest(xs)
+        % ===== COLINEARITY =====
+
+
+        % =============== 7: lapse trials
+        nc = nc+1;
+        if ~isempty(dot_allStart(~isRT))
+
+            durations{nc}        = trialDur;
+            names{nc}            = 'lapse';
+            onsets{nc}           = dot_allStart(~isRT);
+            orth{nc}             = 0;
+
+            nc = nc+1;
+
+        else
+            runList(end) = []
+        end
+
+
+
+
+
+
+
+
+
+
+
+
+    case 'targdistAdapt'      % =====================================================
+        %%
+
+        isRT    = isfinite(r.behav.rt(:, task_runs)) &  isfinite(nextRT(:, task_runs)) &  isfinite(prevRT(:, task_runs));
+
+
+        %  ---- RT -----
+        rt = r.behav.rt(:, task_runs);
+        prevRT = prevRT(:, task_runs);
+        nextRT = nextRT(:, task_runs);
+
+        %  ---- Acc -----
+        acc = r.behav.acc(:, task_runs);
+        prevAcc = prevAcc(:, task_runs);
+        nextAcc = nextAcc(:, task_runs);
+
+
+        %  ---- Dist -----
+        dist = r.confs(:, task_runs);
+        prevDist = prevDist(:, task_runs);
+        nextDist = nextDist(:, task_runs);
+
+        %  ---- Targ -----
+        targ = r.attendCohs(:, task_runs);
+        prevTarg = prevTarg(:, task_runs);
+        nextTarg = nextTarg(:, task_runs);
+
+
+
+
+        nc = 1;
+
+        %  =============== 1: response trials
+
+        durations{nc}        = trialDur;
+        names{nc}            = 'trial';
+        onsets{nc}           = dot_allStart(isRT)';
+        orth{nc}             = 0;
+
+        pm = 1;
+
+
+
+
+        % 2: distractor congruence
+        dist = r.confs(:, task_runs);
+        prevDist = prevDist(:, task_runs);
+
+
+        targ = r.attendCohs(:, task_runs);
+        prevTarg = prevTarg(:, task_runs);
+
+
+
+
+        % 3: prevDist
+        pmod(nc).name{pm}     = 'prevDist';
+        pmod(nc).param{pm}    = (-.5*(nextDist(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: curDist
+        pmod(nc).name{pm}     = 'curDist';
+        pmod(nc).param{pm}    = (-.5*(dist(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+        % 3: prevDist
+        pmod(nc).name{pm}     = 'prevDist2';
+        pmod(nc).param{pm}    = center(abs(-.5*(nextDist(isRT) - 3)))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: curDist
+        pmod(nc).name{pm}     = 'curDist2';
+        pmod(nc).param{pm}    = center(abs(-.5*(dist(isRT) - 3)))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+        % 3: prevDist
+        pmod(nc).name{pm}     = 'prevTarg';
+        pmod(nc).param{pm}    = (.5*(nextTarg(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: curDist
+        pmod(nc).name{pm}     = 'curTarg';
+        pmod(nc).param{pm}    = (.5*(targ(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+        %         % 3: curDist
+        %         pmod(nc).name{pm}     = 'prevRT';
+        %         pmod(nc).param{pm}    = center(prevRT(isRT))';
+        %         pmod(nc).poly{pm}     = 1;
+        %         pm = pm+1;
+        %
+        %
+        %
+        %         % 3: curDist
+        %         pmod(nc).name{pm}     = 'prevAcc';
+        %         pmod(nc).param{pm}    = center(prevAcc(isRT))';
+        %         pmod(nc).poly{pm}     = 1;
+        %         pm = pm+1;
+
+
+
+
+
+
+
+
+
+        runList = [1:(length(pmod(1).name)+2)] % keep track of conditions
+
+        % ===== COLINEARITY =====
+        xs = [];
+        for ii = 1:(pm-1)
+            xs(:,ii) = pmod(nc).param{ii}';
+        end
+
+        collintest(xs)
+        % ===== COLINEARITY =====
+
+
+        % =============== 7: lapse trials
+        nc = nc+1;
+        if ~isempty(dot_allStart(~isRT))
+
+            durations{nc}        = trialDur;
+            names{nc}            = 'lapse';
+            onsets{nc}           = dot_allStart(~isRT);
+            orth{nc}             = 0;
+
+            nc = nc+1;
+
+        else
+            runList(end) = []
+        end
+
+
+
+
+
+
+
+    case 'targdistRTAdapt'      % =====================================================
+        %%
+
+        isRT    = isfinite(r.behav.rt(:, task_runs)) &  isfinite(nextRT(:, task_runs)) &  isfinite(prevRT(:, task_runs));
+
+
+
+
+        nc = 1;
+
+        %  =============== 1: response trials
+
+        durations{nc}        = trialDur;
+        names{nc}            = 'trial';
+        onsets{nc}           = dot_allStart(isRT)';
+        orth{nc}             = 0;
+
+        pm = 1;
+
+
+
+        %  ---- RT -----
+        rt = r.behav.rt(:, task_runs);
+        prevRT = prevRT(:, task_runs);
+        nextRT = nextRT(:, task_runs);
+
+        %  ---- Acc -----
+        acc = r.behav.acc(:, task_runs);
+        prevAcc = prevAcc(:, task_runs);
+        nextAcc = nextAcc(:, task_runs);
+
+
+        % 2: distractor congruence
+        dist = r.confs(:, task_runs);
+        prevDist = prevDist(:, task_runs);
+
+
+        targ = r.attendCohs(:, task_runs);
+        prevTarg = prevTarg(:, task_runs);
+
+
+
+
+
+        % 3: prevDist
+        pmod(nc).name{pm}     = 'prevDist';
+        pmod(nc).param{pm}    = (-.5*(prevDist(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: curDist
+        pmod(nc).name{pm}     = 'curDist';
+        pmod(nc).param{pm}    = (-.5*(dist(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: curDist
+        pmod(nc).name{pm}     = 'xDist';
+        pmod(nc).param{pm}    = (-.5*(prevDist(isRT) - 3))' .* (-.5*(dist(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+
+        % 3: prevDist
+        pmod(nc).name{pm}     = 'prevTarg';
+        pmod(nc).param{pm}    = (.5*(prevTarg(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: curDist
+        pmod(nc).name{pm}     = 'curTarg';
+        pmod(nc).param{pm}    = (.5*(targ(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: curDist
+        pmod(nc).name{pm}     = 'xTarg';
+        pmod(nc).param{pm}    = (.5*(prevTarg(isRT) - 3))' .* (.5*(targ(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+
+
+        % 3: prevDist
+        pmod(nc).name{pm}     = 'prevDistRT';
+        pmod(nc).param{pm}    = (-.5*(prevDist(isRT) - 3))' .* center(prevRT(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: curDist
+        pmod(nc).name{pm}     = 'curDistRT';
+        pmod(nc).param{pm}    = (-.5*(dist(isRT) - 3))' .* center(rt(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: curDist
+        pmod(nc).name{pm}     = 'xDistRT';
+        pmod(nc).param{pm}    = (-.5*(prevDist(isRT) - 3))' .* (-.5*(dist(isRT) - 3))' .* center(rt(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+
+        % 3: prevDist
+        pmod(nc).name{pm}     = 'prevTargRT';
+        pmod(nc).param{pm}    = (.5*(prevTarg(isRT) - 3))' .* center(prevRT(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: curDist
+        pmod(nc).name{pm}     = 'curTargRT';
+        pmod(nc).param{pm}    = (.5*(targ(isRT) - 3))' .* center(rt(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+        % 3: curDist
+        pmod(nc).name{pm}     = 'xTargRT';
+        pmod(nc).param{pm}    = (.5*(prevTarg(isRT) - 3))' .* (.5*(targ(isRT) - 3))' .* center(rt(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+
+
+
+
+
+
+
+        runList = [1:(length(pmod(1).name)+2)] % keep track of conditions
+
+        % ===== COLINEARITY =====
+        xs = [];
+        for ii = 1:(pm-1)
+            xs(:,ii) = pmod(nc).param{ii}';
+        end
+
+        collintest(xs)
+        % ===== COLINEARITY =====
+
+
+        % =============== 7: lapse trials
+        nc = nc+1;
+        if ~isempty(dot_allStart(~isRT))
+
+            durations{nc}        = trialDur;
+            names{nc}            = 'lapse';
+            onsets{nc}           = dot_allStart(~isRT);
+            orth{nc}             = 0;
+
+            nc = nc+1;
+
+        else
+            runList(end) = []
+        end
+
+
+
+
+
+
+
+
+
+
+
+
+
+    case 'targdistRTpe'      % =====================================================
+        %%
+
+        isRT    = isfinite(r.behav.rt(:, task_runs)) &  isfinite(nextRT(:, task_runs)) &  isfinite(prevRT(:, task_runs));
+
+
+
+
+        nc = 1;
+
+        %  =============== 1: response trials
+
+        durations{nc}        = trialDur;
+        names{nc}            = 'trial';
+        onsets{nc}           = dot_allStart(isRT)';
+        orth{nc}             = 0;
+
+        pm = 1;
+
+
+
+        %  ---- RT -----
+        rt = r.behav.rt(:, task_runs);
+        prevRT = prevRT(:, task_runs);
+        nextRT = nextRT(:, task_runs);
+
+        %  ---- Acc -----
+        acc = r.behav.acc(:, task_runs);
+        prevAcc = prevAcc(:, task_runs);
+        nextAcc = nextAcc(:, task_runs);
+
+
+        % 2: distractor congruence
+        dist = r.confs(:, task_runs);
+        prevDist = prevDist(:, task_runs);
+
+
+        targ = r.attendCohs(:, task_runs);
+        prevTarg = prevTarg(:, task_runs);
+
+
+
+
+
+        % 3: prevDist
+        pmod(nc).name{pm}     = 'prevDist';
+        pmod(nc).param{pm}    = (-.5*(prevDist(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: curDist
+        pmod(nc).name{pm}     = 'curDist';
+        pmod(nc).param{pm}    = (-.5*(dist(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+        % 3: prevDist
+        pmod(nc).name{pm}     = 'prevTarg';
+        pmod(nc).param{pm}    = (.5*(prevTarg(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: curDist
+        pmod(nc).name{pm}     = 'curTarg';
+        pmod(nc).param{pm}    = (.5*(targ(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+        % 3: prevDist
+        pmod(nc).name{pm}     = 'prevDistRT';
+        pmod(nc).param{pm}    = (-.5*(prevDist(isRT) - 3))' .* center(rt(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: curDist
+        pmod(nc).name{pm}     = 'curDistRT';
+        pmod(nc).param{pm}    = (-.5*(dist(isRT) - 3))' .* center(rt(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+        % 3: prevDist
+        pmod(nc).name{pm}     = 'prevTargRT';
+        pmod(nc).param{pm}    = (.5*(prevTarg(isRT) - 3))' .* center(rt(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: curDist
+        pmod(nc).name{pm}     = 'curTargRT';
+        pmod(nc).param{pm}    = (.5*(targ(isRT) - 3))' .* center(rt(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+
+
+
+
+        % 3: prevDist
+        pmod(nc).name{pm}     = 'prevDistAcc';
+        pmod(nc).param{pm}    = (-.5*(prevDist(isRT) - 3))' .* center(acc(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: curDist
+        pmod(nc).name{pm}     = 'curDistAcc';
+        pmod(nc).param{pm}    = (-.5*(dist(isRT) - 3))' .* center(acc(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+        % 3: prevDist
+        pmod(nc).name{pm}     = 'prevTargAcc';
+        pmod(nc).param{pm}    = (.5*(prevTarg(isRT) - 3))' .* center(acc(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: curDist
+        pmod(nc).name{pm}     = 'curTargAcc';
+        pmod(nc).param{pm}    = (.5*(targ(isRT) - 3))' .* center(acc(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+
+
+
+
+
+
+
+        runList = [1:(length(pmod(1).name)+2)] % keep track of conditions
+
+        % ===== COLINEARITY =====
+        xs = [];
+        for ii = 1:(pm-1)
+            xs(:,ii) = pmod(nc).param{ii}';
+        end
+
+        collintest(xs)
+        % ===== COLINEARITY =====
+
+
+        % =============== 7: lapse trials
+        nc = nc+1;
+        if ~isempty(dot_allStart(~isRT))
+
+            durations{nc}        = trialDur;
+            names{nc}            = 'lapse';
+            onsets{nc}           = dot_allStart(~isRT);
+            orth{nc}             = 0;
+
+            nc = nc+1;
+
+        else
+            runList(end) = []
+        end
+
+
+
+
+
+
+
+
+
+
+    case 'extremePE'      % =====================================================
+        %%
+
+        isRT    = isfinite(r.behav.rt(:, task_runs));
+
+
+
+
+        nc = 1;
+
+        %  =============== 1: response trials
+
+        durations{nc}        = trialDur;
+        names{nc}            = 'trial';
+        onsets{nc}           = dot_allStart(isRT)';
+        orth{nc}             = 0;
+
+        pm = 1;
+
+
+
+        %  ---- RT -----
+        rt = r.behav.rt(:, task_runs);
+        prevRT = prevRT(:, task_runs);
+        nextRT = nextRT(:, task_runs);
+
+        %  ---- Acc -----
+        acc = r.behav.acc(:, task_runs);
+        prevAcc = prevAcc(:, task_runs);
+        nextAcc = nextAcc(:, task_runs);
+
+
+        % 2: distractor congruence
+        dist = r.confs(:, task_runs);
+        prevDist = prevDist(:, task_runs);
+
+
+        targ = r.attendCohs(:, task_runs);
+        prevTarg = prevTarg(:, task_runs);
+
+
+
+
+
+        % 3: targLoLo
+        pmod(nc).name{pm}     = 'targLoLo';
+        pmod(nc).param{pm}    = (targ(isRT) == 1)' .* (prevTarg(isRT) == 1)';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: targHiHi
+        pmod(nc).name{pm}     = 'targHiHi';
+        pmod(nc).param{pm}    = (targ(isRT) == 5)' .* (prevTarg(isRT) == 5)';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+        % 3: distLoLo
+        pmod(nc).name{pm}     = 'distLoLo';
+        pmod(nc).param{pm}    = (dist(isRT) == 5)' .* (dist(isRT) == 5)';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: distHiHi
+        pmod(nc).name{pm}     = 'distHiHi';
+        pmod(nc).param{pm}    = (dist(isRT) == 1)' .* (dist(isRT) == 1)';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+
+
+        runList = [1:(length(pmod(1).name)+2)] % keep track of conditions
+
+        % ===== COLINEARITY =====
+        xs = [];
+        for ii = 1:(pm-1)
+            xs(:,ii) = pmod(nc).param{ii}';
+        end
+
+        collintest(xs)
+        % ===== COLINEARITY =====
+
+
+        % =============== 7: lapse trials
+        nc = nc+1;
+        if ~isempty(dot_allStart(~isRT))
+
+            durations{nc}        = trialDur;
+            names{nc}            = 'lapse';
+            onsets{nc}           = dot_allStart(~isRT);
+            orth{nc}             = 0;
+
+            nc = nc+1;
+
+        else
+            runList(end) = []
+        end
+
+
+
+
+
+
+
+
+
+
+
+
+
+    case 'lagPerform'      % =====================================================
+        %%
+
+        isRT    = isfinite(r.behav.rt(:, task_runs)) &  isfinite(nextRT(:, task_runs)) &  isfinite(prevRT(:, task_runs));
+
+
+
+
+        nc = 1;
+
+        %  =============== 1: response trials
+
+        durations{nc}        = trialDur;
+        names{nc}            = 'trial';
+        onsets{nc}           = dot_allStart(isRT)';
+        orth{nc}             = 0;
+
+        pm = 1;
+
+
+
+
+        %  ---- RT -----
+        rt = r.behav.rt(:, task_runs);
+        prevRT = prevRT(:, task_runs);
+        nextRT = nextRT(:, task_runs);
+
+        % 2: RT
+        pmod(nc).name{pm}     = 'RT';
+        pmod(nc).param{pm}    = center(rt(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: prevRT
+        pmod(nc).name{pm}     = 'prevRT';
+        pmod(nc).param{pm}    = center(prevRT(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+        % 3: nextRT
+        pmod(nc).name{pm}     = 'nextRT';
+        pmod(nc).param{pm}    = center(nextRT(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+
+        %  ---- Acc -----
+        acc = r.behav.acc(:, task_runs);
+        prevAcc = prevAcc(:, task_runs);
+        nextAcc = nextAcc(:, task_runs);
+
+        % 4: currAcc
+        pmod(nc).name{pm}     = 'acc';
+        pmod(nc).param{pm}    = center(acc(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: nextRT
+        pmod(nc).name{pm}     = 'prevAcc';
+        pmod(nc).param{pm}    = center(prevAcc(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: nextRT
+        pmod(nc).name{pm}     = 'nextAcc';
+        pmod(nc).param{pm}    = center(nextAcc(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+
+        runList = [1:(length(pmod(1).name)+2)] % keep track of conditions
+
+        % ===== COLINEARITY =====
+        xs = [];
+        for ii = 1:(pm-1)
+            xs(:,ii) = pmod(nc).param{ii}';
+        end
+
+        collintest(xs)
+        % ===== COLINEARITY =====
+
+
+        % =============== 8: lapse trials
+        nc = nc+1;
+        if ~isempty(dot_allStart(~isRT))
+
+            durations{nc}        = trialDur;
+            names{nc}            = 'lapse';
+            onsets{nc}           = dot_allStart(~isRT);
+            orth{nc}             = 0;
+
+            nc = nc+1;
+
+        else
+            runList(end) = []
+        end
+
+
+
+
+
+
+
+
+    case 'lagDist'      % =====================================================
+        %%
+
+        isRT    = isfinite(r.behav.rt(:, task_runs)) &  isfinite(nextRT(:, task_runs)) &  isfinite(prevRT(:, task_runs));
+
+
+
+
+        nc = 1;
+
+        %  =============== 1: response trials
+
+        durations{nc}        = trialDur;
+        names{nc}            = 'trial';
+        onsets{nc}           = dot_allStart(isRT)';
+        orth{nc}             = 0;
+
+        pm = 1;
+
+
+
+        dist = r.confs(:, task_runs);
+        nextDist = nextDist(:, task_runs);
+        prevDist = prevDist(:, task_runs);
+
+
+
+        %  ---- RT -----
+        rt = r.behav.rt(:, task_runs);
+        prevRT = prevRT(:, task_runs);
+        nextRT = nextRT(:, task_runs);
+
+
+
+        % 2: RT
+        pmod(nc).name{pm}     = 'RT';
+        pmod(nc).param{pm}    = center(rt(isRT))' .* (.5*(3-dist(isRT)))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: prevRT
+        pmod(nc).name{pm}     = 'prevRT';
+        pmod(nc).param{pm}    = center(prevRT(isRT))' .* (.5*(3-prevDist(isRT)))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+        % 3: nextRT
+        pmod(nc).name{pm}     = 'nextRT';
+        pmod(nc).param{pm}    = center(nextRT(isRT))' .* (.5*(3-nextDist(isRT)))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+
+        %  ---- Acc -----
+        acc = r.behav.acc(:, task_runs);
+        prevAcc = prevAcc(:, task_runs);
+        nextAcc = nextAcc(:, task_runs);
+
+        % 4: currAcc
+        pmod(nc).name{pm}     = 'acc';
+        pmod(nc).param{pm}    = center(acc(isRT))' .* (.5*(3-dist(isRT)))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: nextRT
+        pmod(nc).name{pm}     = 'prevAcc';
+        pmod(nc).param{pm}    = center(prevAcc(isRT))' .* (.5*(3-prevDist(isRT)))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: nextRT
+        pmod(nc).name{pm}     = 'nextAcc';
+        pmod(nc).param{pm}    = center(nextAcc(isRT))' .* (.5*(3-nextDist(isRT)))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+
+        runList = [1:(length(pmod(1).name)+2)] % keep track of conditions
+
+        % ===== COLINEARITY =====
+        xs = [];
+        for ii = 1:(pm-1)
+            xs(:,ii) = pmod(nc).param{ii}';
+        end
+
+        collintest(xs)
+        % ===== COLINEARITY =====
+
+
+        % =============== 8: lapse trials
+        nc = nc+1;
+        if ~isempty(dot_allStart(~isRT))
+
+            durations{nc}        = trialDur;
+            names{nc}            = 'lapse';
+            onsets{nc}           = dot_allStart(~isRT);
+            orth{nc}             = 0;
+
+            nc = nc+1;
+
+        else
+            runList(end) = []
+        end
+
+
+    case 'filtTargDist'      % =====================================================
+        %%
+
+        isRT    = isfinite(r.behav.rt(:, task_runs));
+
+
+
+
+        nc = 1;
+
+        %  =============== 1: response trials
+
+        durations{nc}        = trialDur;
+        names{nc}            = 'trial';
+        onsets{nc}           = dot_allStart(isRT)';
+        orth{nc}             = 0;
+
+        pm = 1;
+
+
+
+        dist = r.confs(:, task_runs);
+        nextDist = nextDist(:, task_runs);
+        prevDist = prevDist(:, task_runs);
+
+        targ = r.attendCohs(:, task_runs);
+        nextTarg = nextTarg(:, task_runs);
+        prevTarg = prevTarg(:, task_runs);
+
+
+
+        %  ---- DISTRACTORS -----
+
+
+        % 2: dist
+        pmod(nc).name{pm}     = 'dist';
+        pmod(nc).param{pm}    = (.5*(3-dist(isRT)))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: prevDist
+        pmod(nc).name{pm}     = 'prevDist';
+        pmod(nc).param{pm}    = (.5*(3-prevDist(isRT)))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+        % 3: nextDist
+        pmod(nc).name{pm}     = 'nextDist';
+        pmod(nc).param{pm}    = (.5*(3-nextDist(isRT)))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+
+        %  ---- TARGETS -----
+
+
+        % 2: targ
+        pmod(nc).name{pm}     = 'targ';
+        pmod(nc).param{pm}    = (.5*(targ(isRT)-3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: prevTarg
+        pmod(nc).name{pm}     = 'prevTarg';
+        pmod(nc).param{pm}    = (.5*(prevTarg(isRT)-3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+        % 3: nextTarg
+        pmod(nc).name{pm}     = 'nextTarg';
+        pmod(nc).param{pm}    = (.5*(nextTarg(isRT)-3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+
+
+        runList = [1:(length(pmod(1).name)+2)] % keep track of conditions
+
+        % ===== COLINEARITY =====
+        xs = [];
+        for ii = 1:(pm-1)
+            xs(:,ii) = pmod(nc).param{ii}';
+        end
+
+        collintest(xs)
+        % ===== COLINEARITY =====
+
+
+        % =============== 8: lapse trials
+        nc = nc+1;
+        if ~isempty(dot_allStart(~isRT))
+
+            durations{nc}        = trialDur;
+            names{nc}            = 'lapse';
+            onsets{nc}           = dot_allStart(~isRT);
+            orth{nc}             = 0;
+
+            nc = nc+1;
+
+        else
+            runList(end) = []
+        end
+
+
+
+
+
+    
+
+
+
+
+
+    case 'cTargDistPerformCat'      % =====================================================
+        %%
+
+        isRT    = isfinite(r.behav.rt(:, task_runs)) &  isfinite(nextRT(:, task_runs)) &  isfinite(prevRT(:, task_runs));
+
+
+        runList = [1:11]; % keep track of conditions
+
+
+        nc = 1;
+
+        %  =============== 1: response trials
+
+        durations{nc}        = trialDur;
+        names{nc}            = 'trial';
+        onsets{nc}           = dot_allStart(isRT)';
+        orth{nc}             = 0;
+
+        pm = 1;
+
+        % 2: distractor congruence
+        dist = r.confs(:, task_runs);
+
+        pmod(nc).name{pm}     = 'dist';
+        pmod(nc).param{pm}    = (-(dist(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: target coherence
+        targ = r.attendCohs(:, task_runs);
+
+        pmod(nc).name{pm}     = 'target';
+        pmod(nc).param{pm}    = (.5*(targ(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 4: response
+        resp = r.behav.resp(:, task_runs);
+        resp(~isfinite(resp)) = 2;
+
+        pmod(nc).name{pm}     = 'resp';
+        pmod(nc).param{pm}    = (resp(isRT)-2)';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+        % 5: RT
+        rt = r.behav.rt(:, task_runs);
+
+        pmod(nc).name{pm}     = 'rt';
+        pmod(nc).param{pm}    = center(rt(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 6: prev RT
+        prevRT = prevRT(:, task_runs);
+
+        pmod(nc).name{pm}     = 'prevRT';
+        pmod(nc).param{pm}    = center(prevRT(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 7: next RT
+        nextRT = nextRT(:, task_runs);
+
+        pmod(nc).name{pm}     = 'nextRT';
+        pmod(nc).param{pm}    = center(nextRT(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+        % 8: acc
+        acc = r.behav.acc(:, task_runs);
+
+        pmod(nc).name{pm}     = 'acc';
+        pmod(nc).param{pm}    = center(acc(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 9: prevAcc
+        prevAcc = prevAcc(:, task_runs);
+
+        pmod(nc).name{pm}     = 'prevAcc';
+        pmod(nc).param{pm}    = center(prevAcc(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 10: dacc
+        nextAcc = nextAcc(:, task_runs);
+
+        pmod(nc).name{pm}     = 'nextAcc';
+        pmod(nc).param{pm}    = center(nextAcc(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % ===== COLINEARITY =====
+        xs = [];
+        for ii = 1:(pm-1)
+            xs(:,ii) = pmod(nc).param{ii}';
+        end
+
+        collintest(xs)
+        % ===== COLINEARITY =====
+
+
+        % =============== 11: lapse trials
+        nc = nc+1;
+        if ~isempty(dot_allStart(~isRT))
+
+            durations{nc}        = trialDur;
+            names{nc}            = 'lapse';
+            onsets{nc}           = dot_allStart(~isRT);
+            orth{nc}             = 0;
+
+            nc = nc+1;
+
+        else
+            runList(runList==11) = [];
+        end
+
+
+
+
+
+    case 'cDistDynCat'              % =====================================================
+        %%
+
+
+        runList = [1:9]; % keep track of conditions
+
+
+        nc = 1;
+
+        %  =============== 1: response trials
+
+        durations{nc}        = trialDur;
+        names{nc}            = 'trial';
+        onsets{nc}           = dot_allStart(isRT)';
+        orth{nc}             = 0;
+
+        pm = 1;
+
+        % 2: distractor congruence
+        dist = r.confs(:, task_runs);
+
+        pmod(nc).name{pm}     = 'dist';
+        pmod(nc).param{pm}    = (-(dist(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: RT
+        rt = r.behav.rt(:, task_runs);
+
+        pmod(nc).name{pm}     = 'rt';
+        pmod(nc).param{pm}    = center(rt(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+        % 4: acc
+        acc = r.behav.acc(:, task_runs);
+
+        pmod(nc).name{pm}     = 'acc';
+        pmod(nc).param{pm}    = center(acc(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+        % 5: distRT
+        pmod(nc).name{pm}     = 'distRT';
+        pmod(nc).param{pm}    = (-(dist(isRT) - 3))' .* center(rt(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+        % 6: distAcc
+        pmod(nc).name{pm}     = 'distAcc';
+        pmod(nc).param{pm}    = (-(dist(isRT) - 3))' .* center(acc(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+        % 7: rtAcc
+        pmod(nc).name{pm}     = 'rtAcc';
+        pmod(nc).param{pm}    = center(rt(isRT))' .* center(acc(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+        % 8: distRtAcc
+        pmod(nc).name{pm}     = 'distRtAcc';
+        pmod(nc).param{pm}    = (-(dist(isRT) - 3))' .* center(rt(isRT))' .* center(acc(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+        % =============== 9: lapse trials
+        nc = nc+1;
+        if ~isempty(dot_allStart(~isRT))
+
+            durations{nc}        = trialDur;
+            names{nc}            = 'lapse';
+            onsets{nc}           = dot_allStart(~isRT);
+            orth{nc}             = 0;
+
+            nc = nc+1;
+
+        else
+            runList(runList==9) = [];
+        end
+
+    case 'cTargIncCongPerformCat'   % =====================================================
+        %%
+
+        runList = [1:9]; % keep track of conditions
+
+
+        nc = 1;
+
+        %  =============== 1: response trials
+        durations{nc}        = trialDur;
+        names{nc}            = 'trial';
+        onsets{nc}           = dot_allStart(isRT)';
+        orth{nc}             = 0;
+        pm = 1;
+
+        % 2: distractor incongruence
+        dist = r.confs(:, task_runs);
+
+        pmod(nc).name{pm}     = 'distInc';
+        pmod(nc).param{pm}    = ((dist(isRT)==4) - (dist(isRT)==5))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: distractor congruence
+        pmod(nc).name{pm}     = 'distCong';
+        pmod(nc).param{pm}    = ((dist(isRT)==1) - (dist(isRT)==2))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+        % 4: distractor congruence
+        pmod(nc).name{pm}     = 'distBin';
+        pmod(nc).param{pm}    = (((dist(isRT)==1) + (dist(isRT)==2)) - ((dist(isRT)==4) + (dist(isRT)==5)))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 5: target coherence
+        targ = r.attendCohs(:, task_runs);
+        pmod(nc).name{pm}     = 'target';
+        pmod(nc).param{pm}    = (.5*(targ(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 6: response
+        resp = r.behav.resp(:, task_runs);
+        resp(~isfinite(resp)) = 2;
+        pmod(nc).name{pm}     = 'resp';
+        pmod(nc).param{pm}    = (resp(isRT)-2)';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 7: RT
+        rt = r.behav.rt(:, task_runs);
+        pmod(nc).name{pm}     = 'rt';
+        pmod(nc).param{pm}    = nanz(rt(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 8: acc
+        acc = r.behav.acc(:, task_runs);
+        pmod(nc).name{pm}     = 'acc';
+        pmod(nc).param{pm}    = center(acc(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % =============== 9: lapse trials
+        nc = nc+1;
+        if ~isempty(dot_allStart(~isRT))
+
+            durations{nc}        = trialDur;
+            names{nc}            = 'lapse';
+            onsets{nc}           = dot_allStart(~isRT);
+            orth{nc}             = 0;
+
+            nc = nc+1;
+
+        else
+            runList(runList==9) = [];
+        end
+
+
+
+    case 'cSenseFourierCat_10-100'  % =====================================================
+        %%
+
+        ptSel = find(sd.pts == ptNum);
+
+        distGain_rt    = sd.out(ptSel).distGainAll_rt;
+        distVel_rt     = sd.out(ptSel).distVelAll_rt;
+        distGain_acc    = sd.out(ptSel).distGainAll_acc;
+        distVel_acc     = sd.out(ptSel).distVelAll_acc;
+
+        targGain_rt    = sd.out(ptSel).targGainAll_rt;
+        targVel_rt     = sd.out(ptSel).targVelAll_rt;
+        targGain_acc    = sd.out(ptSel).targGainAll_acc;
+        targVel_acc     = sd.out(ptSel).targVelAll_acc;
+
+        runList = [1:13]; % keep track of number of conditions
+
+
+        nc = 1;
+
+        %  =============== 1: response trials
+
+        durations{nc}        = trialDur;
+        names{nc}            = 'trial';
+        onsets{nc}           = dot_allStart(isRT)';
+        orth{nc}             = 0;
+        pm = 1;
+
+
+
+        % 2: distractor congruence
+        dist = r.confs(:, task_runs);
+
+        pmod(nc).name{pm}     = 'dist';
+        pmod(nc).param{pm}    = (-.5*(dist(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+        % 3: distractor gain
+        pmod(nc).name{pm}     = 'distGain_{rt}';
+        pmod(nc).param{pm}    = center(distGain_rt(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 4: distractor gain Vel
+        pmod(nc).name{pm}     = 'distVel_{rt}';
+        pmod(nc).param{pm}    = center(distVel_rt(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+        % 5: distractor gain
+        pmod(nc).name{pm}     = 'distGain_{acc}';
+        pmod(nc).param{pm}    = center(distGain_acc(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 6: distractor gain Vel
+        pmod(nc).name{pm}     = 'distVel_{acc}';
+        pmod(nc).param{pm}    = center(distVel_acc(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+
+
+
+
+        % 7: target coherence
+        targ = r.attendCohs(:, task_runs);
+
+        pmod(nc).name{pm}     = 'target';
+        pmod(nc).param{pm}    = (.5*(targ(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+
+
+        % 8: distractor gain
+        pmod(nc).name{pm}     = 'targGain_{rt}';
+        pmod(nc).param{pm}    = center(targGain_rt(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 9: distractor gain vel
+        pmod(nc).name{pm}     = 'targVel_{rt}';
+        pmod(nc).param{pm}    = center(targVel_rt(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+        % 10: distractor gain
+        pmod(nc).name{pm}     = 'targGain_{acc}';
+        pmod(nc).param{pm}    = center(targGain_acc(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 11: distractor gain vel
+        pmod(nc).name{pm}     = 'targVel_{acc}';
+        pmod(nc).param{pm}    = center(targVel_acc(isRT))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+        % 12: response
+        resp = r.behav.resp(:, task_runs);
+        resp(~isfinite(resp)) = 2;
+
+        pmod(nc).name{pm}     = 'resp';
+        pmod(nc).param{pm}    = (resp(isRT)-2)';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+
+        % =============== 13: lapse trials
+        nc = nc+1;
+        if ~isempty(dot_allStart(~isRT))
+
+            durations{nc}        = trialDur;
+            names{nc}            = 'lapse';
+            onsets{nc}           = dot_allStart(~isRT);
+            orth{nc}             = 0;
+
+            nc = nc+1;
+
+        else
+            runList(runList==13) = [];
+        end
+
+
+    case 'cAdaptCat'   % =====================================================
+        %%
+
+
+
+        runList = [1:9]; % keep track of conditions
+
+
+        nc = 1;
+
+
+
+
+        %  =============== 1: response trials
+        durations{nc}        = trialDur;
+        names{nc}            = 'trial';
+        onsets{nc}           = dot_allStart(isRT)';
+        orth{nc}             = 0;
+        pm = 1;
+
+
+
+        % 2: distractor congruence
+        dist = r.confs(:, task_runs);
+        pmod(nc).name{pm}     = 'distPresent';
+        pmod(nc).param{pm}    = (-.5*(dist(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 3: distractor congruence (accurate trials)
+        prevDist = prevDist(:, task_runs);
+        pmod(nc).name{pm}     = 'distPast';
+        pmod(nc).param{pm}    = (-.5*(prevDist(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 4: distractor congruence (accurate trials)
+        nextDist = nextDist(:, task_runs);
+        pmod(nc).name{pm}     = 'distFuture';
+        pmod(nc).param{pm}    = (-.5*(nextDist(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+        % 5: distractor congruence (accurate trials)
+        pmod(nc).name{pm}     = 'adaptPast';
+        pmod(nc).param{pm}    = (-.5*(dist(isRT) - 3))' .* (-.5*(prevDist(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+        % 6: distractor congruence (accurate trials)
+        pmod(nc).name{pm}     = 'adaptFuture';
+        pmod(nc).param{pm}    = (-.5*(dist(isRT) - 3))' .* (-.5*(nextDist(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+        % 7: target coherence
+        targ = r.attendCohs(:, task_runs);
+
+        pmod(nc).name{pm}     = 'target';
+        pmod(nc).param{pm}    = (.5*(targ(isRT) - 3))';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+        % 8: response
+        resp = r.behav.resp(:, task_runs);
+        resp(~isfinite(resp)) = 2;
+
+        pmod(nc).name{pm}     = 'resp';
+        pmod(nc).param{pm}    = (resp(isRT)-2)';
+        pmod(nc).poly{pm}     = 1;
+        pm = pm+1;
+
+
+
+
+        % =============== 9: lapse trials
+        nc = nc+1;
+        if ~isempty(dot_allStart(~isRT))
+
+            durations{nc}        = trialDur;
+            names{nc}            = 'lapse';
+            onsets{nc}           = dot_allStart(~isRT);
+            orth{nc}             = 0;
+
+            nc = nc+1;
+
+        else
+            runList(runList==9) = [];
+        end
+
+
+
+    case 'cDistPPI'   % =====================================================
+        %%
+
+        runList = []; % keep track of conditions
+
+        durations   = [];
+        names       = [];
+        onsets      = [];
+        orth        = [];
+        pmod        = [];
+
+
+end
+
+
+
+
+% save mat
+save(sprintf('%s/%s', cond_dir, analysis),...
+    'names', 'onsets', 'durations', 'pmod', 'orth')
+
+
+
+%% === make confound regressors
+
+R = [];
+
+runmx = [];
+hpfmx = [];
+all_fd = [];
+for rr = 1:nRuns
+
+    % load data
+    cs = tdfread(fullfile(cl(rr).folder, cl(rr).name));
+
+    % framewise displacement
+    fd = [0; str2num(cs.framewise_displacement(2:end,:))];
+    all_fd = [all_fd; fd];
+
+    % CSF-WM
+    csfwm   = center(cs.csf_wm);
+    csf     = center(cs.csf);
+    wm      = center(cs.white_matter);
+
+
+    % confound regressors
+    R = [R; ...
+        csfwm, ...
+        ];
+
+
+
+    % HPF
+    if any(regName{1}) % if MOT
+
+        % cosine HPF
+        cos0 = cs.cosine00;
+
+        hpfmx = blkdiag(hpfmx, [cos0]);
+
+    else
+
+        % cosine HPF
+        cos0 = cs.cosine00;
+        cos1 = cs.cosine01;
+        cos2 = cs.cosine02;
+        cos3 = cs.cosine03;
+        cos4 = cs.cosine04;
+        cos5 = cs.cosine05;
+
+        hpfmx = blkdiag(hpfmx, [cos0, cos1, cos2, cos3, cos4, cos5]);
+
+    end
+
+
+
+    % run intercepts
+    runmx = blkdiag(runmx, ones(size(cs.trans_x)));
+
+
+
+
+end
+
+
+names = { ...
+    'csfwm', ...
+    };
+
+
+
+switch cvi
+
+    case 'fast'
+
+        names{end+1} = 'fd';
+        R = [R, all_fd];
+
+
+    case 'wls'
+
+        % HPF (125s)
+        for rr = 2:nRuns
+
+            if any(regName{1}) % if MOT
+
+                names{end+1} = sprintf('hpf0_%d',rr);
+
+            else
+
+                names{end+1} = sprintf('hpf0_%d',rr);
+                names{end+1} = sprintf('hpf1_%d',rr);
+                names{end+1} = sprintf('hpf2_%d',rr);
+                names{end+1} = sprintf('hpf3_%d',rr);
+                names{end+1} = sprintf('hpf4_%d',rr);
+                names{end+1} = sprintf('hpf5_%d',rr);
+
+            end
+
+        end
+        R = [R, hpfmx];
+
+end
+
+
+% n-1 run intercepts
+for rr = 2:nRuns
+
+    names{end+1} = sprintf('run_%d',rr);
+
+end
+R = [R, runmx(:,2:end)];
+
+
+
+
+switch name
+
+    case 'cDistPPI' % add PPI if necessary
+
+        voi_dir =  sprintf('%s/spm-data/PPI/data', root_dir)
+
+        ai = load(fullfile(voi_dir, sprintf('PPI_antIns_%d', ptNum)));
+        dlpfc = load(fullfile(voi_dir, sprintf('PPI_DLPFC_%d', ptNum)));
+
+        d = load(fullfile(voi_dir, sprintf('task_%d', ptNum)));
+
+        R = [R, center(ai.PPI.Y), center(dlpfc.PPI.Y), center(ai.PPI.P), ...
+            center(ai.PPI.ppi), center(dlpfc.PPI.ppi),...
+            ];
+
+        runList = [runList, zeros(size(names))];
+
+
+        names{end+1} = 'AI';
+        names{end+1} = 'DLPFC';
+        names{end+1} = 'dist';
+        names{end+1} = 'distAI';
+        names{end+1} = 'distDLPFC';
+        runList = [runList, 1:5]
+
+
+        % save & update list
+        save(sprintf('%s/confound', cfd_dir),...
+            'R', 'names');
+
+        condList = [condList, runList];
+        all_R = [all_R; R];
+
+
+
+
+
+
+
+    case 'cAdaptPPI' % add PPI if necessary
+
+        voi_dir =  sprintf('%s/spm-data/PPI/data', root_dir)
+
+        ai = load(fullfile(voi_dir, sprintf('VOI_antIns_%d_1', ptNum)));
+        dlpfc = load(fullfile(voi_dir, sprintf('VOI_DLPFC_%d_1', ptNum)));
+
+        d = load(fullfile(voi_dir, sprintf('task_%d', ptNum)));
+
+        R = [R, center(ai.Y), center(dlpfc.Y), center(d.dist),  center(d.target), ...
+            center(ai.Y) .* center(d.dist), center(dlpfc.Y) .* center(d.dist),...
+            center(ai.Y) .* center(d.target), center(dlpfc.Y) .* center(d.target),...
+            ];
+
+        runList = [runList, zeros(size(names))];
+
+
+        names{end+1} = 'AI';
+        names{end+1} = 'DLPFC';
+        names{end+1} = 'dist';
+        names{end+1} = 'targ';
+        names{end+1} = 'distAI';
+        names{end+1} = 'distDLPFC';
+        names{end+1} = 'targAI';
+        names{end+1} = 'targDLPFC';
+        runList = [runList, 1:8]
+
+
+        % save & update list
+        save(sprintf('%s/confound', cfd_dir),...
+            'R', 'names');
+
+        condList = [condList, runList];
+        all_R = [all_R; R];
+
+
+
+
+
+    otherwise
+
+        % save & update list
+        save(sprintf('%s/confound', cfd_dir),...
+            'R', 'names');
+
+
+        runList = [runList, zeros(size(names))]
+        condList = [condList, runList];
+
+        all_R = [all_R; R];
+
+end
+
+
+
+save(sprintf('%s/%s_condList', cond_dir, analysis), 'condList', 'task_runs', 'taskMot', 'taskCol');
+
+
+
+%% plot motion
+mkdir(sprintf('%s/spm-data/motion', root_dir));
+
+f=figure; hold on;
+f.Position = [100 100 1300 1000];
+
+% Rs = 150:150:900;
+
+
+% % % translation % % %
+subplot(3,1,1); hold on;
+plot(all_R(:,ismember(names, {'tx', 'ty', 'tz'})), '-', 'LineWidth', 2);
+% for rr = 1:length(Rs)
+%     xline(Rs(rr), '-k', 'LineWidth', .75);
+% end
+legend({'tx', 'ty', 'tz'}, 'Location', 'northeastoutside')
+title(sprintf('translation - sub-%d', ptNum))
+set(gca, 'TickDir', 'out', 'LineWidth', 1);
+xlabel('TR')
+
+
+% % % rotation % % %
+subplot(3,1,2); hold on;
+plot(all_R(:,ismember(names, {'rx', 'ry', 'rz'})), '-', 'LineWidth', 2);
+% for rr = 1:length(Rs)
+%     xline(Rs(rr), '-k', 'LineWidth', .75);
+% end
+legend({'rx', 'ry', 'rz'}, 'Location', 'northeastoutside')
+title(sprintf('rotation - sub-%d', ptNum))
+set(gca, 'TickDir', 'out', 'LineWidth', 1);
+xlabel('TR')
+
+
+% % % displacement % % %
+subplot(3,1,3); hold on;
+plot(all_fd, '-', 'LineWidth', 2);
+% for rr = 1:length(Rs)
+%     xline(Rs(rr), '-k', 'LineWidth', .75);
+% end
+legend({'fd'}, 'Location', 'northeastoutside')
+title(sprintf('displacement - sub-%d', ptNum))
+set(gca, 'TickDir', 'out', 'LineWidth', 1);
+xlabel('TR')
+
+
+% % % wm/csf % % %
+% subplot(4,1,4); hold on;
+% plot(all_R(:,ismember(names, {'csfwm'})), '-', 'LineWidth', 2);
+% for rr = 1:length(Rs)
+%     xline(Rs(rr), '-k', 'LineWidth', .75);
+% end
+% legend({'csfwm'}, 'Location', 'northeastoutside')
+% title(sprintf('translation - sub-%d', ptNum))
+% set(gca, 'TickDir', 'out', 'LineWidth', 1);
+% xlabel('TR')
+
+
+
+
+% % % save & close % % %
+saveas(f,sprintf('%s/spm-data/motion/%s_sub-%d.png', root_dir, movtName, ptNum))
+
+close(f);
+
+
+%% === get masks
+
+ml = dir(sprintf('%s/anat/%s', pt_dir, mask_filt));
+mask_file = fullfile(ml(end).folder, ml(end).name)
+
+ml = dir(sprintf('%s/anat/%s', pt_dir, grey_filt));
+grey_file = fullfile(ml(end).folder, ml(end).name)
+
+
+
+%% === BATCH ====
+%  ==============
+
+spm_jobman('initcfg')
+
+% specify model for each run
+for rr = 1:nRuns
+
+    % get frames
+    runFile = fullfile(fl(rr).folder, fl(rr).name)
+    matlabbatch{rr}.spm.util.exp_frames.files = {runFile};
+    matlabbatch{rr}.spm.util.exp_frames.frames = Inf;
+
+
+    % add scan/cond info to session
+    matlabbatch{nRuns+1}.spm.tools.rwls.fmri_rwls_spec.sess.scans(rr) = ...
+        cfg_dep('Expand image frames: Expanded filename list.', substruct('.','val', '{}',{rr}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','files'));
+
+end
+
+
+matlabbatch{nRuns+1}.spm.tools.rwls.fmri_rwls_spec.sess.cond = struct('name', {}, 'onset', {}, 'duration', {}, 'tmod', {}, 'pmod', {}, 'orth', {});
+
+
+
+
+switch name
+
+    case 'cDistPPI' % no conds if PPI
+
+        matlabbatch{nRuns+1}.spm.tools.rwls.fmri_rwls_spec.sess.multi = {''};
+
+    otherwise
+
+        matlabbatch{nRuns+1}.spm.tools.rwls.fmri_rwls_spec.sess.multi = ...
+            {sprintf('%s/%s.mat', cond_dir, analysis)};
+end
+
+
+matlabbatch{nRuns+1}.spm.tools.rwls.fmri_rwls_spec.sess.regress = struct('name', {}, 'val', {});
+matlabbatch{nRuns+1}.spm.tools.rwls.fmri_rwls_spec.sess.multi_reg = {sprintf('%s/confound.mat', cfd_dir)};
+matlabbatch{nRuns+1}.spm.tools.rwls.fmri_rwls_spec.sess.hpf = inf; % remove HPF, include cosine basis for each block
+
+
+
+
+
+% specify general model features
+matlabbatch{nRuns+1}.spm.tools.rwls.fmri_rwls_spec.dir = {save_dir};
+matlabbatch{nRuns+1}.spm.tools.rwls.fmri_rwls_spec.timing.units = 'secs';
+matlabbatch{nRuns+1}.spm.tools.rwls.fmri_rwls_spec.timing.RT = data.param.TR;
+matlabbatch{nRuns+1}.spm.tools.rwls.fmri_rwls_spec.timing.fmri_t = 16;
+matlabbatch{nRuns+1}.spm.tools.rwls.fmri_rwls_spec.timing.fmri_t0 = 8;
+
+matlabbatch{nRuns+1}.spm.tools.rwls.fmri_rwls_spec.fact = struct('name', {}, 'levels', {});
+matlabbatch{nRuns+1}.spm.stats.fmri_spec.bases.hrf.derivs = [0 0];
+matlabbatch{nRuns+1}.spm.tools.rwls.fmri_rwls_spec.volt = 1;
+matlabbatch{nRuns+1}.spm.tools.rwls.fmri_rwls_spec.global = 'None';
+matlabbatch{nRuns+1}.spm.tools.rwls.fmri_rwls_spec.mthresh = 0.8;
+matlabbatch{nRuns+1}.spm.tools.rwls.fmri_rwls_spec.mask = {mask_file};
+matlabbatch{nRuns+1}.spm.tools.rwls.fmri_rwls_spec.cvi = cvi;
+matlabbatch{nRuns+1}.spm.tools.rwls.fmri_rwls_spec.cvi_mask = {grey_file};
+
+
+
+% estimate model
+matlabbatch{nRuns+2}.spm.tools.rwls.fmri_rwls_est.spmmat(1) = ...
+    cfg_dep('fMRI model specification: SPM.mat File', substruct('.','val', '{}',{nRuns+1}, '.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','spmmat'));
+matlabbatch{nRuns+2}.spm.tools.rwls.fmri_rwls_est.method.Classical = 1;
+% matlabbatch{nRuns+2}.spm.tools.rwls.fmri_rwls_est.write_residuals = 1;
+

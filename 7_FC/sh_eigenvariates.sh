@@ -97,7 +97,7 @@ date
 echo; echo; echo; echo;
 
 # do level 1
-matlab-threaded –nodisplay -nodesktop -r "extract_eigenvariates('${root_dir}','${spm_dir}', ${ptNum}, '${name}', ${fwhm}, '${confound}', '${cvi}');"
+matlab-threaded –nodisplay -nodesktop -r "RDM_eigenvariates('${root_dir}','${spm_dir}', ${ptNum}, '${name}', ${fwhm}, '${confound}', '${cvi}');"
 
 echo; echo; echo; echo;
 echo 'finished at:'

@@ -28,11 +28,13 @@ moving files around & smoothing
 
 GLM analysis
 
+### batch scripts
 - `sh_wholeBrain_1_level1.sh`: run first-level GLM
 - `sh_wholeBrain_2_level2.sh`: run second-level GLM
 - `sh_wholeBrain_3_TFCE.sh`: TFCE correction
 - `sh_wholeBrain_4_RSA.sh`: just run first-level models for EGA 
 
+### functions
 - `RDM_wholeBrain_1_1_estimateCat.m`: core function for first-level analyses
 
 
@@ -44,18 +46,21 @@ Rostral-caudal analysis within dACC ROI
 ## 6_EGA
 
 EGA analysis. First level models need to be fit block-wise for CV similarity.
+draws heavily from `pcm_toolbox` & especially `rsatoolbox` (see `utils`)
 
+### batch scripts
 - `sh_parcel_1_fit.sh`: run EGA
 
-
+### functions
 - `RDM_parcel_1_1_fit.m`: calculate similarity metrics for different models
 - `RDM_parcel_2_1_analyze.m`: analyze similarity metrics
 - `RDM_parcel_2_3_mediation`: run FC analyses
 
 
+
 ## 7_FC
 
-- extract eigenvariate for FC analyses
+- extract eigenvariate for FC analyses (drawing heavily from SPM's PPI)
 
 
 ## simulations

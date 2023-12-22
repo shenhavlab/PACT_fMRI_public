@@ -72,7 +72,7 @@ EGA simulations
 
 ## utils
 
-lots of helpful packages
+lots of helpful packages.
 
 - `\pcm_toolbox\`: 
 	- `pcm_estGCrossval.m`: core similarity metric function, adapted with more metrics
@@ -91,3 +91,8 @@ lots of helpful packages
 - `NIfTI_Toolbox`: https://www.mathworks.com/matlabcentral/fileexchange/8797-tools-for-nifti-and-analyze-image
 - `rwls`: https://github.com/jdiedrichsen/rwls
 - `surfing`: https://github.com/nno/surfing
+
+
+NOTE: requires an installation of SPM that you point to in batch scripts.
+https://www.fil.ion.ucl.ac.uk/spm/software/download/
+

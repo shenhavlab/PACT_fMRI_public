@@ -6,7 +6,7 @@
 
 behavior & data files
 - data files have all event information 
-- analyze_scanner_behav.m: analyze behavior
+- `analyze_scanner_behav.m`: analyze behavior
 
 
 ## 1_xnat2bids
@@ -28,12 +28,12 @@ moving files around & smoothing
 
 GLM analysis
 
-- sh_wholeBrain_1_level1.sh: run first-level GLM
-- sh_wholeBrain_2_level2.sh: run second-level GLM
-- sh_wholeBrain_3_TFCE.sh: TFCE correction
-- sh_wholeBrain_4_RSA.sh: just run first-level models for EGA 
+- `sh_wholeBrain_1_level1.sh`: run first-level GLM
+- `sh_wholeBrain_2_level2.sh`: run second-level GLM
+- `sh_wholeBrain_3_TFCE.sh`: TFCE correction
+- `sh_wholeBrain_4_RSA.sh`: just run first-level models for EGA 
 
-- RDM_wholeBrain_1_1_estimateCat.m: core function for first-level analyses
+- `RDM_wholeBrain_1_1_estimateCat.m`: core function for first-level analyses
 
 
 ## 5_ROI
@@ -43,11 +43,14 @@ Rostral-caudal analysis within dACC ROI
 
 ## 6_EGA
 
-EGA analysis
+EGA analysis. First level models need to be fit block-wise for CV similarity.
 
-- RDM_parcel_1_1_fit.m: calculate similarity metrics for different models
-- RDM_parcel_2_1_analyze.m: analyze similarity metrics
-- RDM_parcel_2_3_mediation: run FC analyses
+- `sh_parcel_1_fit.sh`: run EGA
+
+
+- `RDM_parcel_1_1_fit.m`: calculate similarity metrics for different models
+- `RDM_parcel_2_1_analyze.m`: analyze similarity metrics
+- `RDM_parcel_2_3_mediation`: run FC analyses
 
 
 ## 7_FC
@@ -65,9 +68,19 @@ EGA simulations
 
 lots of helpful packages
 
-- pcm_toolbox
-	- pcm_estGCrossval.m: core similarity metric function
+- `\pcm_toolbox\`: 
+	- `pcm_estGCrossval.m`: core similarity metric function, adapted with more metrics
 
-- rsatoolbox
+- `\rsatoolbox\`
 	- basis of parcel-wise searchlight function
 	- noise normalization
+
+
+`bayesFactor`: https://github.com/klabhub/bayesFactor
+`palm`: https://github.com/andersonwinkler/PALM
+`pcm_toolbox`: https://github.com/jdiedrichsen/pcm_toolbox
+`rsatoolbox`: https://github.com/rsagroup/rsatoolbox_matlab/tree/develop
+`ScientificColourMaps7`: https://www.fabiocrameri.ch/colourmaps/
+`NIfTI_Toolbox`: https://www.mathworks.com/matlabcentral/fileexchange/8797-tools-for-nifti-and-analyze-image
+`rwls`: https://github.com/jdiedrichsen/rwls
+`surfing`: https://github.com/nno/surfing

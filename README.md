@@ -76,11 +76,12 @@ lots of helpful packages
 	- noise normalization
 
 
-`bayesFactor`: https://github.com/klabhub/bayesFactor
-`palm`: https://github.com/andersonwinkler/PALM
-`pcm_toolbox`: https://github.com/jdiedrichsen/pcm_toolbox
-`rsatoolbox`: https://github.com/rsagroup/rsatoolbox_matlab/tree/develop
-`ScientificColourMaps7`: https://www.fabiocrameri.ch/colourmaps/
-`NIfTI_Toolbox`: https://www.mathworks.com/matlabcentral/fileexchange/8797-tools-for-nifti-and-analyze-image
-`rwls`: https://github.com/jdiedrichsen/rwls
-`surfing`: https://github.com/nno/surfing
+
+- `bayesFactor`: https://github.com/klabhub/bayesFactor
+- `palm`: https://github.com/andersonwinkler/PALM
+- `pcm_toolbox`: https://github.com/jdiedrichsen/pcm_toolbox
+- `rsatoolbox`: https://github.com/rsagroup/rsatoolbox_matlab/tree/develop
+- `ScientificColourMaps7`: https://www.fabiocrameri.ch/colourmaps/
+- `NIfTI_Toolbox`: https://www.mathworks.com/matlabcentral/fileexchange/8797-tools-for-nifti-and-analyze-image
+- `rwls`: https://github.com/jdiedrichsen/rwls
+- `surfing`: https://github.com/nno/surfing

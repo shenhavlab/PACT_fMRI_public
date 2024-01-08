@@ -41,8 +41,8 @@ set -u
 # To generate, run the following command: bash /gpfs/data/bnc/scripts/xnat-token
 
 
-XNAT_USER=hritz 					# xnat username
-XNAT_PASSWORD=${xnat_password} 		# saved xnat password
+XNAT_USER=       # xnat username
+XNAT_PASSWORD= 	 # saved xnat password
 
 # uncomment to print environment variables with XNAT in the name
 # printenv | grep XNAT

@@ -2,6 +2,8 @@ fMRI and behavioral analysis scripts for Ritz & Shenhav (in press) 'Orthogonal n
 
 Includes code for Ecoding Geometry Analysis (EGA) and related multivariate functional connectivity.
 
+Unprocessed fMRI data available at: https://doi.org/10.18112/openneuro.ds004909.v1.1.0
+
 
 ## 0_behavior
 
